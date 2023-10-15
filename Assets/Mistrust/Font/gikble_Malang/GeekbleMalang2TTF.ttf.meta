@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 97fbeaaf96d960b44808abd515fa4e35
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - GeekbleMalang2
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 60521878af728d04498f7dcc95b2b946, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
