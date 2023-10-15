@@ -36,7 +36,7 @@ public class C_PC_Client : MonoBehaviour
 	}
 #endif
 
-	public void ConnectToServer()
+	public void ConnectToServer(System.Action<bool> _callBack = null)
 	{
 		// 이미 연결되었다면 함수 무시
 		if (socketReady) return;
@@ -53,14 +53,22 @@ public class C_PC_Client : MonoBehaviour
 			writer = new StreamWriter(stream);
 			reader = new StreamReader(stream);
 			socketReady = true;
+
+			if (_callBack != null) _callBack(true);
 			Debug.Log("참가 성공");
 		}
 		catch (Exception e)
 		{
 			Debug.Log("참가 실패");
+			if (_callBack != null) _callBack(false);
 			//Chat.instance.ShowMessage($"소켓에러 : {e.Message}");
 		}
 	}
+
+    private void Awake()
+    {
+		CGameManager.Instance.m_Network = this;
+    }
 
     private void Start()
     {
@@ -82,10 +90,36 @@ public class C_PC_Client : MonoBehaviour
 		}
 	}
 
-	void OnIncomingData(string _data) 
+	//TODO : 받은 데이터 처리하는법 구상하자
+	public void OnIncomingData(string _data) 
 	{
-		Debug.Log("받음 : " + _data);
+		Debug.Log("전송받음 " + _data);
+
+		char[] delimiters = { '+' };
+		string[] packit = _data.Split(delimiters);
+
+		foreach (var it in packit) 
+		{
+			Debug.Log(it);
+		}
+
+		switch (packit[0]) 
+		{
+			case "Lock":
+				CUtility.CLock lockObj = JsonUtility.FromJson(packit[1], typeof(CUtility.CLock)) as CUtility.CLock;
+				var lockSolver = CGameManager.Instance.m_AppMgr.m_AnalogueLockSolver;
+				lockSolver.GetLockData(lockObj);
+				break;
+
+			default: 
+				
+				break;
+
+		}
+		
 	}
+
+
 
 	void FunctionExecuter(string _data) 
 	{
