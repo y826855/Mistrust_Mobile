@@ -8,7 +8,7 @@ using System.IO;
 using System;
 using TMPro;
 
-public class C_PC_Client : MonoBehaviour
+public class C_Mobile_Client : MonoBehaviour
 {
     bool socketReady = false;
     TcpClient socket = null;
@@ -42,7 +42,10 @@ public class C_PC_Client : MonoBehaviour
 		if (socketReady) return;
 
 		// 기본 호스트/ 포트번호
+#if UNITY_EDITOR
 		string ip = Client_IP;
+#endif
+		//string ip = "NONE";
 		int port = 7777;
 
 		// 소켓 생성
@@ -90,7 +93,7 @@ public class C_PC_Client : MonoBehaviour
 		}
 	}
 
-	//TODO : 받은 데이터 처리하는법 구상하자
+	//받은 데이터 처리
 	public void OnIncomingData(string _data) 
 	{
 		Debug.Log("전송받음 " + _data);
@@ -103,19 +106,24 @@ public class C_PC_Client : MonoBehaviour
 			Debug.Log(it);
 		}
 
-		switch (packit[0]) 
-		{
-			case "Lock":
-				CUtility.CLock lockObj = JsonUtility.FromJson(packit[1], typeof(CUtility.CLock)) as CUtility.CLock;
-				var lockSolver = CGameManager.Instance.m_AppMgr.m_AnalogueLockSolver;
-				lockSolver.GetLockData(lockObj);
-				break;
+		//switch (packit[0] as CUtility.ESendToMobile) 
+		CGameManager.Instance.m_AppMgr.ReciveData((CUtility.ESendToMobile)int.Parse(packit[0]),
+			packit[1]);
 
-			default: 
-				
-				break;
 
-		}
+		//switch ((CUtility.ESendToMobile)int.Parse(packit[0])) 
+		//{
+		//	case CUtility.ESendToMobile.LOCK:
+		//		CUtility.CLock lockObj = JsonUtility.FromJson(packit[1], typeof(CUtility.CLock)) as CUtility.CLock;
+		//		var lockSolver = CGameManager.Instance.m_AppMgr.m_AnalogueLockSolver;
+		//		lockSolver.GetLockData(lockObj);
+		//		break;
+		//
+		//	default: 
+		//		
+		//		break;
+		//
+		//}
 		
 	}
 

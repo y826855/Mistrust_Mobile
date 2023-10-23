@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CLocker : MonoBehaviour
+public class CLocker : CTouchable
 {
     Vector3 InputPosStart;
     Vector3 InputPosLast;
@@ -25,6 +25,21 @@ public class CLocker : MonoBehaviour
     }
 #endif
 
-    //TODO : 모바일용 짜야함
+    Coroutine coInputToRotate = null;
+    public override void BeginInput()
+    {
+    }
+
+    public override void EndInput()
+    {
+        var touch = CGameManager.Instance.m_Input;
+
+        Debug.Log(touch.m_Moved);
+        if (touch.m_Moved.y > 150f)
+        { 
+            m_FuncTryOpen();
+        }
+    }
+
 }
 

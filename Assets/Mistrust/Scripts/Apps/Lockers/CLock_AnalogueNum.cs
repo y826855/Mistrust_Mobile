@@ -63,14 +63,22 @@ public class CLock_AnalogueNum : MonoBehaviour
 
     public void Open() 
     {
-        if (CheckPassword() == true) 
+        if (CheckPassword() == true)
         {
             Debug.Log("OPEN!!");
             m_Locker.transform.localPosition = Vector3.up * 0.4f;
 
-            
-
             //JsonUtility.FromJson()
+            //string packit = true;
+            //TODO : 전송 여기서 했음.
+            string packit = string.Format("{0}+{1}",
+                (int)CUtility.ESendToMobile.LOCK, true);
+            CGameManager.Instance.m_Network.SendFunction(packit);
+        }
+        else 
+        {
+            //실패시 진동
+            Handheld.Vibrate();
         }
     }
 

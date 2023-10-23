@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b7c5b670e3b9e42a5fe3bc5eb62df5, type: 3}
   m_Name: CGameManager
   m_EditorClassIdentifier: 
+  m_Input: {fileID: 0}
   m_AppMgr: {fileID: 0}
   m_Network: {fileID: 0}
   m_Dictionary: {fileID: 0}

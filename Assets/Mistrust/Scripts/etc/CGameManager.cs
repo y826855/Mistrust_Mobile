@@ -11,8 +11,9 @@ public class CGameManager : CScriptableSingletone<CGameManager>
 
     //adding on Runtime
     //public CPlayer m_Player = null;
+    public CMobile_InputCheck m_Input  = null;
     public CAppManager m_AppMgr = null;
-    public C_PC_Client m_Network = null;
+    public C_Mobile_Client m_Network = null;
 
     //adding on Editor
     [Header("---scriptableDatas---")]
