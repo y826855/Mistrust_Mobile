@@ -5,8 +5,6 @@ using TMPro;
 
 public class CLock_AnalogueNum : MonoBehaviour
 {
-    public RectTransform m_ShowUI = null;
-    
     [Header("--------------------------------")]
     public CLocker m_Locker = null;
     public CUtility.CLock m_Lock = null;
@@ -17,18 +15,18 @@ public class CLock_AnalogueNum : MonoBehaviour
     public List<CNumRotator> m_Nums = new List<CNumRotator>();
     //public 
 
+    bool solved = false;
+
     public string m_Password = "123";
 
     public void GetLockData(CUtility.CLock _lock) 
     {
         m_Lock = _lock;
         m_Password = _lock.m_Password;
-        this.gameObject.SetActive(true);
     }
 
     private void Start()
     {
-        m_ShowUI.gameObject.SetActive(true);
         m_Locker.m_FuncTryOpen = Open;
 
         foreach (var it in m_ShowNums)
@@ -63,7 +61,7 @@ public class CLock_AnalogueNum : MonoBehaviour
 
     public void Open() 
     {
-        if (CheckPassword() == true)
+        if (CheckPassword() == true && solved == false)
         {
             Debug.Log("OPEN!!");
             m_Locker.transform.localPosition = Vector3.up * 0.4f;
@@ -74,6 +72,8 @@ public class CLock_AnalogueNum : MonoBehaviour
             string packit = string.Format("{0}+{1}",
                 (int)CUtility.ESendToMobile.LOCK, true);
             CGameManager.Instance.m_Network.SendFunction(packit);
+
+            StartCoroutine(CoWaitForDisable());
         }
         else 
         {
@@ -82,14 +82,26 @@ public class CLock_AnalogueNum : MonoBehaviour
         }
     }
 
+    IEnumerator CoWaitForDisable() 
+    {
+        yield return CUtility.GetSecD5To2D5(1.5f);
+        CGameManager.Instance.m_AppMgr.CloseApp();
+    }
+
     int RotationToNum(Transform _target) 
     {
         float y = _target.localRotation.eulerAngles.y;
         return Mathf.RoundToInt(y) / 36; 
     }
 
+    private void OnEnable()
+    {
+        m_Locker.transform.localPosition = Vector3.zero;
+        solved = false;
+    }
+
     private void OnDisable()
     {
-        m_ShowUI.gameObject.SetActive(false);
+
     }
 }

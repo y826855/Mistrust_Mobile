@@ -36,17 +36,21 @@ public class C_Mobile_Client : MonoBehaviour
 	}
 #endif
 
-	public void ConnectToServer(System.Action<bool> _callBack = null)
+	public void ConnectToServer(
+		System.Action<bool> _callBack = null,
+		string _ip = "192.168.0.5",
+		string _port = "7777")
 	{
 		// 이미 연결되었다면 함수 무시
 		if (socketReady) return;
 
 		// 기본 호스트/ 포트번호
 #if UNITY_EDITOR
-		string ip = Client_IP;
+		//string ip = Client_IP;
 #endif
-		//string ip = "NONE";
-		int port = 7777;
+		//Debug.Log(Client_IP);
+		string ip = _ip;
+		int port = int.Parse(_port);
 
 		// 소켓 생성
 		try
